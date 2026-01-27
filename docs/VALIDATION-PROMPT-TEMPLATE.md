@@ -17,6 +17,9 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
 1. **Read the Issue**
    - Fetch and review issue #{ISSUE_NUMBER} to understand all claims being validated
    - Identify the specific claims, file paths, and metrics mentioned
+   - **Check dependencies**: Note any "Depends on" issues that should be completed first
+   - **Review specs**: If OGC specification links are provided, skim relevant sections
+   - **Understand context**: Note which phase this issue belongs to (see #24)
 
 2. **Locate the Code**
    - Search the OS4CSAPI/ogc-client-CSAPI repository for relevant files
@@ -40,7 +43,8 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
    - For test count claims: Count actual tests and compare
    - For coverage claims: Look for coverage reports or analyze test completeness
    - For code size claims: Count lines or verify stated sizes
-   - For compliance claims: Compare against specifications
+   - For compliance claims: Compare against specifications (use OGC spec links from issue)
+   - **Cross-check dependencies**: If this issue depends on others, verify those findings align
 
 6. **Test Functionality (if applicable)**
    - Write small test cases to verify claimed behavior
@@ -134,6 +138,10 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
    - [ ] Assessment claim needs minor corrections - see notes
    - [ ] Assessment claim needs significant corrections - see notes
 
+   **Downstream Impact**:
+   - Issues that depend on this: [List "Blocks" issues from issue description]
+   - Impact: [None / Minor / Major - explain any concerns for downstream validation]
+
    ---
 
    ## Discrepancies
@@ -157,6 +165,8 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
    - Check off the issue in #24 (Master Tracker)
    - Link to the validation report
    - Note any blockers for downstream issues
+   - **Update "Blocks" issues**: If you found issues that affect downstream validation, comment on those issues
+   - **Update dependencies**: If findings contradict prerequisite issues, flag for re-validation
 
 **Important Guidelines:**
 - Be thorough but objective - validate what exists, not what should exist
@@ -203,6 +213,10 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
 4. **Document Everything**: The validation report is the deliverable - make it comprehensive
 5. **Link Issues**: Reference related issues when claims depend on each other
 6. **Update Progress**: Keep issue #24 checkboxes current
+7. **Check Dependencies First**: Before starting validation, verify all "Depends on" issues are complete
+8. **Use Spec Links**: When provided, OGC specification links help validate compliance claims
+9. **Consider Downstream Impact**: Note findings that might affect "Blocks" issues
+10. **Follow Phase Order**: Validating in phase order (1→7) ensures dependencies are met
 
 ---
 
@@ -220,3 +234,7 @@ Before considering an issue complete, verify your validation report includes:
 - [ ] Discrepancies are clearly documented
 - [ ] Overall summary is provided
 - [ ] Repository commit SHA is documented
+- [ ] **Dependencies checked**: All "Depends on" issues were reviewed if applicable
+- [ ] **Downstream impact assessed**: "Blocks" issues are considered
+- [ ] **Specs referenced**: OGC specifications consulted where provided
+- [ ] **Cross-references added**: Related issues are linked in the report
