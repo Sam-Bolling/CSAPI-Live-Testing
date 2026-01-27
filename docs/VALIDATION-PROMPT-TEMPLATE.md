@@ -19,7 +19,7 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
    - Identify the specific claims, file paths, and metrics mentioned
    - **Check dependencies**: Note any "Depends on" issues that should be completed first
    - **Review specs**: If OGC specification links are provided, skim relevant sections
-   - **Understand context**: Note which phase this issue belongs to (see #24)
+   - **Understand context**: Note which phase this issue belongs to (see https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24)
 
 2. **Locate the Code**
    - Search the OS4CSAPI/ogc-client-CSAPI repository for relevant files
@@ -162,7 +162,7 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
    ```
 
 8. **Update Tracking**
-   - Check off the issue in #24 (Master Tracker)
+   - Check off the issue in https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24 (Master Tracker)
    - Link to the validation report
    - Note any blockers for downstream issues
    - **Update "Blocks" issues**: If you found issues that affect downstream validation, comment on those issues
