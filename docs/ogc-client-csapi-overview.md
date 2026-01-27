@@ -4,6 +4,16 @@
 **Assessment Date:** January 27, 2026  
 **Original Library:** [@camptocamp/ogc-client](https://github.com/camptocamp/ogc-client)
 
+## Methodology Note
+
+This assessment is based on analysis of the repository's commit history, code structure, and documentation through GitHub repository searches conducted on January 27, 2026. Key metrics (test counts, coverage percentages, compliance estimates, and code size figures) were extracted from commit messages and repository documentation rather than through independent verification. Specifically:
+
+- **Test coverage (94.03%)** and **test counts (549 total, 196 CSAPI-specific)** are from commit messages
+- **Standards compliance (~95%)** is based on developer-reported progress in commit messages
+- **Code size estimates (7,600+ lines)** are from commit message descriptions
+
+These figures reflect the development team's own reporting and have not been independently verified through running test suites, analyzing coverage reports, or performing line-by-line code counting.
+
 ## Overview
 
 This fork transforms the original ogc-client (which supported WMS, WFS, WMTS, OGC API Features/Records, STAC) into a comprehensive CSAPI client library capable of working with sensor networks, IoT platforms, and connected systems following the OGC Connected Systems standards.
@@ -36,6 +46,11 @@ This is the primary addition - a comprehensive implementation of the OGC API Con
   - Semantic: foi (feature of interest), observedProperty, controlledProperty
   - Structural: recursive system queries, parent filtering
   - Projection: select (property path filtering for sparse fieldsets)
+- **Pagination Support**: 
+  - Query parameters: limit (page size), offset (skip records)
+  - Link-based navigation: rel="next"/"prev" links in responses
+  - Cursor-based pagination through link headers
+  - Automatic link following for paginated result sets
 - **History Support**: Versioned resources with temporal queries
 - **Cascade Delete**: Optional cascade parameter for related resource cleanup
 
