@@ -52,7 +52,7 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
    - Document results
 
 7. **Create Validation Report**
-   Generate a detailed report in issue #{ISSUE_NUMBER} with this structure:
+   Generate a detailed report with this structure:
 
    ```markdown
    ## Validation Report
@@ -161,7 +161,15 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
    [Any follow-up needed or questions for further investigation]
    ```
 
-8. **Update Tracking**
+8. **Report Results**
+   - Post the validation report as a **comment** directly in issue #{ISSUE_NUMBER}
+   - This keeps all evidence, discussion, and findings centralized in one place
+   - The report becomes part of the issue's permanent record
+   - Others can review, discuss, and add findings in the same thread
+   - The timestamp and commit SHA provide traceability
+   - Use GitHub's markdown formatting for proper rendering
+
+9. **Update Tracking**
    - Check off the issue in https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24 (Master Tracker)
    - Link to the validation report
    - Note any blockers for downstream issues
@@ -177,6 +185,7 @@ https://github.com/Sam-Bolling/CSAPI-Live-Testing/issues/24
 - Use ✅ only for fully verified claims with clear evidence
 - Use ⚠️ when claim is mostly true but has caveats or minor inaccuracies
 - Use ❌ when claim cannot be verified or is demonstrably false
+- **Post reports as comments** in the issue being validated for centralized tracking
 
 **Tools Available:**
 - GitHub repository search for finding files
