@@ -1,0 +1,76 @@
+# GitHub Actions Workflow for Live Server Testing
+# Runs tests against live CSAPI server on schedule or manual trigger
+
+name: Live Server Integration Tests
+
+on:
+  schedule:
+    # Run daily at noon UTC (7am EST)
+    - cron: '0 12 * * *'
+  workflow_dispatch:
+    # Allow manual trigger from Actions tab
+  push:
+    branches:
+      - main
+    paths:
+      - 'tests/**'
+      - 'demos/**'
+      - 'package.json'
+
+jobs:
+  test:
+    name: Run Live Server Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run integration tests
+        env:
+          CSAPI_LIVE_SERVER: ${{ secrets.CSAPI_LIVE_SERVER }}
+          CSAPI_LIVE_USER: ${{ secrets.CSAPI_LIVE_USER }}
+          CSAPI_LIVE_PASS: ${{ secrets.CSAPI_LIVE_PASS }}
+        run: npm test
+
+      - name: Run demo scripts
+        env:
+          CSAPI_LIVE_SERVER: ${{ secrets.CSAPI_LIVE_SERVER }}
+          CSAPI_LIVE_USER: ${{ secrets.CSAPI_LIVE_USER }}
+          CSAPI_LIVE_PASS: ${{ secrets.CSAPI_LIVE_PASS }}
+        run: |
+          npm run demo:connection
+          npm run demo:navigator
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ github.run_number }}
+          path: |
+            test-results/
+            coverage/
+          retention-days: 30
+
+      - name: Comment on failure
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '⚠️ Live Server Tests Failed',
+              body: `Live server integration tests failed on scheduled run.\n\nWorkflow: ${context.workflow}\nRun: ${context.runNumber}\n\nPlease check the server status and investigate.`,
+              labels: ['testing', 'automated']
+            });

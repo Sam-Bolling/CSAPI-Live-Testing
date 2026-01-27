@@ -1,0 +1,38 @@
+{
+  "name": "ogc-client-csapi-live-tests",
+  "version": "1.0.0",
+  "description": "Live server validation for OGC API - Connected Systems client",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.js",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test:verbose": "NODE_OPTIONS=--experimental-vm-modules jest --verbose",
+    "demo:connection": "node demos/csapi-live-connection.js",
+    "demo:navigator": "node demos/csapi-navigator-demo.js",
+    "demo:library": "node demos/csapi-library-demo.js",
+    "demo:all": "npm run demo:connection && npm run demo:navigator && npm run demo:library",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@camptocamp/ogc-client": "file:../ogc-client-CSAPI",
+    "dotenv": "^16.4.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "^20.11.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  },
+  "keywords": [
+    "ogc",
+    "csapi",
+    "connected-systems",
+    "integration-tests",
+    "validation"
+  ],
+  "author": "",
+  "license": "MIT"
+}
