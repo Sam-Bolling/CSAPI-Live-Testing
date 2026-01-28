@@ -70,10 +70,17 @@ Complete type system for three encoding formats:
 - `ControlStreamFeature` - Control command streams
 
 **Non-Feature Types:**
-- `Observation` - Individual observations (uses SWE Common)
-- `Command` - Control commands (uses SWE Common)
-- `SystemEvent` - System lifecycle events
-- `Feasibility` - Tasking feasibility requests/responses
+- `Observation` - Individual observations (uses SWE Common) - measurement data points from Datastreams
+- `Command` - Control commands (uses SWE Common) - control instructions to systems via ControlStreams
+- `SystemEvent` - System lifecycle events - tracking system state changes, calibration, maintenance
+- `FeasibilityRequest` / `FeasibilityResponse` - Tasking feasibility validation workflow
+
+**Note:** Non-feature types represent temporal or transactional resources without geometry properties. They are associated with feature types (e.g., Observations belong to Datastreams) but accessed through nested API endpoints rather than as standalone spatial features.
+
+**Supporting Type Definitions** (not resource types):
+- `CSAPIFeatureCollection` - Base type for feature collections
+- `DatastreamSchema` / `ControlStreamSchema` - Inline schema definitions for stream properties
+- `DeploymentPlatform` - Inline platform definition for Deployment properties
 
 **Base Types:**
 - Full GeoJSON geometry support (Point, LineString, Polygon, Multi*, GeometryCollection)
@@ -197,22 +204,29 @@ Automatic response parsing with format detection (`src/ogc-api/csapi/parsers/`):
 
 **Validation Features:**
 - Required property checks (uid, featureType, system references)
-- Geometry validation (type, coordinates)
-- Link validation (rel, href)
-- Temporal extent validation (ISO 8601)
+- GeoJSON Feature structure validation (type, properties, geometry presence)
+- Type-specific reference validation (system, observedProperty, controlledProperty)
 - Type guards: `isSystemFeature()`, `isDatastreamFeature()`, etc.
 - Collection vs. single feature handling
 
-**Coverage:** 61 tests, 97.4% code coverage
+**Known Limitations (see [VALIDATION-CAPABILITIES.md](VALIDATION-CAPABILITIES.md)):**
+- ❌ Geometry validation (coordinates, types) NOT implemented
+- ❌ Link validation (rel, href structure) NOT implemented
+- ❌ Temporal validation (ISO 8601 format) NOT implemented
+- ❌ GeometryCollection support NOT implemented
+
+**Coverage:** 61 tests, 40.95% code coverage (Statements: 77/188, Branches: 33/98, Functions: 9/25)
+
+**Note:** The original assessment claimed 97.4% coverage, which has been corrected to reflect actual measured coverage from coverage reports. The lower coverage is primarily due to all seven collection validators (validateSystemFeatureCollection, validateDeploymentFeatureCollection, validateProcedureFeatureCollection, validateDatastreamFeatureCollection, validateSamplingFeatureCollection, validatePropertyFeatureCollection, validateControlStreamFeatureCollection) having 0% test execution coverage. However, the underlying validation logic IS tested through single-feature validator tests, which achieve high coverage. The untested code consists primarily of iteration logic that applies single-feature validation to collections.
 
 #### SWE Common Validation (`src/ogc-api/csapi/validation/swe-validator.ts`)
 
 **Component Validators:**
-- `validateBoolean()`, `validateText()`, `validateCount()`, `validateQuantity()`, `validateTime()`, `validateCategory()`
-- `validateQuantityRange()`, `validateTimeRange()`, `validateCategoryRange()`
-- `validateDataRecord()`, `validateVector()`, `validateDataArray()`, `validateMatrix()`, `validateDataStream()`
-- `validateDataChoice()`
-- `validateGeometryData()`
+- Simple components: `validateBoolean()`, `validateText()`, `validateCount()`, `validateQuantity()`, `validateTime()`, `validateCategory()`
+- Range components: `validateRangeComponent()` (generic for QuantityRange, CountRange, TimeRange, CategoryRange)
+- Aggregate components: `validateDataRecord()`, `validateDataArray()`, `validateObservationResult()`
+
+**Note:** Some component types return `{ valid: true }` without actual validation (Vector, Matrix, DataStream, DataChoice, Geometry). See [VALIDATION-CAPABILITIES.md](VALIDATION-CAPABILITIES.md) for complete details.
 
 **Constraint Validators:**
 - `validateAllowedValues()` - Numeric intervals, significant figures
@@ -227,23 +241,25 @@ Automatic response parsing with format detection (`src/ogc-api/csapi/parsers/`):
 - Reference frame validation for vectors
 - Element count validation for arrays/matrices
 
-**Coverage:** 50 tests, 100% code coverage
+**Coverage:** 78 tests total (50 in swe-validator.spec.ts + 28 in constraint-validator.spec.ts), 73.68% code coverage (Statements: 42/57, Branches: 23/38, Functions: 5/6)
+
+**Note:** The original assessment claimed 100% coverage and 50 tests, which has been corrected to reflect actual measured coverage from coverage reports. The lower coverage is primarily due to one untested function (`validateObservationResult()` with 0 calls) and some uncovered edge case branches. Importantly, the core constraint validation functionality—which provides interval checking, pattern validation, and significant figures enforcement—is comprehensively tested. The constraint-validator.spec.ts file with 28 tests was not mentioned in the original assessment.
 
 #### SensorML Validation (`src/ogc-api/csapi/validation/sensorml-validator.ts`)
 
-**Schema-Based Validation:**
-- Async validation against OGC JSON schemas from `schemas.opengis.net`
+**Structural Validation:**
 - Process type validation:
   - `validateSensorMLProcess()` - PhysicalSystem, PhysicalComponent, SimpleProcess, AggregateProcess
   - `validateDeployment()` - Deployment metadata
   - `validateDerivedProperty()` - Property derivations
 
 **Features:**
-- JSON Schema compliance checking using Ajv
-- Schema caching for performance
-- Format validation (email, uri, date-time)
+- Manual structural validation (type checking, required properties)
+- Format validation (uri, iso-datetime, geojson-geometry)
 - Required properties enforcement
 - Type-specific validation rules
+
+**Important Note:** Despite documentation claims, this validation does **NOT** fetch or validate against OGC JSON schemas from schemas.opengis.net. Ajv is configured but not used for schema validation. The implementation uses structural validation instead. See [VALIDATION-CAPABILITIES.md](VALIDATION-CAPABILITIES.md) for details.
 
 ### 5. TypedCSAPINavigator (`src/ogc-api/csapi/typed-navigator.ts`)
 
@@ -409,18 +425,22 @@ if (await endpoint.hasConnectedSystems) {
 |-----------|----------|-------|--------|
 | Navigator (navigator.ts) | 92.7% | 186 | ✅ Excellent |
 | Typed Navigator (typed-navigator.ts) | 96.66% | 24 | ✅ Excellent |
-| Validation (geojson-validator.ts) | 97.4% | 61 | ✅ Excellent |
-| Validation (swe-validator.ts) | 100% | 50 | ✅ Perfect |
+| Validation (geojson-validator.ts) | 40.95% | 61 | ⚠️ Limited* |
+| Validation (swe-validator.ts) | 73.68% | 78 | ⚠️ Good** |
 | Parsers (resources.ts) | 97.63% | 79 | ✅ Excellent |
 | Parsers (base.ts) | 96.62% | 29 | ✅ Excellent |
 | Request Builders (request-builders.ts) | 97.5% | 16 | ✅ Excellent |
 | Formats (formats.ts) | 100% | 8 | ✅ Perfect |
 | Endpoint Integration | 100% | 10 | ✅ Perfect |
 
+*Note: GeoJSON validator coverage is lower because all 7 collection validators have 0% execution coverage. However, the underlying validation logic IS tested via single-feature validator tests.*
+
+**Note: SWE Common validator coverage is lower (73.68%) due to one untested function (`validateObservationResult()`) and some uncovered edge case branches. The core constraint validation system is comprehensively tested.
+
 **Test Categories:**
 1. **Unit Tests** (186 tests): Navigator URL building, query parameters, resource detection
 2. **Integration Tests** (10 tests): Endpoint integration, conformance checking, navigator caching
-3. **Validation Tests** (111 tests): GeoJSON, SWE Common, SensorML validation
+3. **Validation Tests** (139 tests): GeoJSON, SWE Common, SensorML validation
 4. **Parser Tests** (108 tests): Format detection, conversion, error handling
 5. **Builder Tests** (16 tests): Request body construction, validation integration
 
@@ -559,10 +579,12 @@ Based on commit history (commits from January 25-27, 2026):
 
 ### Weaknesses/Limitations
 
-1. **SensorML Validation Not Integrated**
-   - SensorML validator exists but not yet integrated into parsers
-   - Only GeoJSON format validated during parsing
-   - Type definitions complete but runtime validation pending
+1. **SensorML Validation Integration**
+   - ✅ **INTEGRATED** as of commit `7a471d3c` (January 27, 2026)
+   - Available via `CSAPIParser.validateSensorML()` method in base class
+   - `validateDeployment()` integrated into `DeploymentParser.validate()`
+   - ⚠️ **Not integrated:** `validateDerivedProperty()` (no DerivedPropertyParser exists)
+   - Automatic validation during parsing is optional and must be explicitly enabled
 
 2. **No WebSocket Streaming**
    - CSAPI Part 2 supports WebSocket for real-time data
@@ -687,9 +709,9 @@ Based on commit history (commits from January 25-27, 2026):
 ### For the Fork Maintainers
 
 1. **Complete SensorML Validation Integration**
-   - Integrate sensorml-validator into parsers
-   - Add validation for all SensorML formats
-   - Bring validator coverage to match GeoJSON (97%+)
+   - ✅ Core integration complete (commit 7a471d3c, January 27, 2026)
+   - Future: Add DerivedPropertyParser for complete coverage
+   - Consider enabling automatic validation during parsing as opt-in feature
 
 2. **Add Encoding Support**
    - Implement binary encoding parsers
@@ -723,6 +745,6 @@ The OS4CSAPI/ogc-client-CSAPI fork represents a comprehensive, production-ready 
 
 The addition of 7,600+ lines of TypeScript code brings complete support for 10 CSAPI resource types across three encoding formats (GeoJSON, SensorML, SWE Common). The layered architecture (navigators, parsers, validators) provides both low-level URL building and high-level typed APIs, making it suitable for a wide range of applications from simple sensor queries to complex IoT management platforms.
 
-Key strengths include comprehensive type safety, multi-format support, extensive test coverage, and excellent developer experience through the TypedCSAPINavigator API. Minor gaps remain (SensorML validation integration, WebSocket streaming, encoding support) but do not prevent production usage for HTTP-based CSAPI interactions.
+Key strengths include comprehensive type safety, multi-format support, extensive test coverage, and excellent developer experience through the TypedCSAPINavigator API. Minor gaps remain (WebSocket streaming, advanced encoding support, DerivedProperty parser) but do not prevent production usage for HTTP-based CSAPI interactions.
 
 This fork transforms ogc-client from a traditional OGC service client into a modern IoT/sensor platform client capable of working with the next generation of OGC standards. It serves as both a valuable tool for CSAPI developers and a reference implementation for the standards themselves.

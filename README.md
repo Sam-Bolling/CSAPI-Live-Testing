@@ -182,9 +182,12 @@ View workflow runs in Actions tab.
 
 ## 📚 Documentation
 
+- **[Validation Capabilities](docs/VALIDATION-CAPABILITIES.md)**: **NEW** - Comprehensive reference for what validations ARE vs ARE NOT implemented
 - **[Server Findings](docs/server-findings.md)**: Detailed analysis of server behavior
 - **[Test Results](docs/test-results.md)**: Execution logs and metrics
 - **[Validation Report](docs/validation-report.md)**: Comprehensive validation evidence
+- **[OGC-Client-CSAPI Overview](docs/ogc-client-csapi-overview.md)**: Library assessment and capabilities
+- **[Validation Executive Summary](docs/validation-executive-summary.md)**: Comprehensive validation findings
 
 ## 🔗 Related Repositories
 
