@@ -330,6 +330,10 @@ REFERENCE MATERIALS:
   `C:\Users\sbolling\OneDrive - Riverside Research\Documents\OGC CSAPI SWG Meeting Files\csapi_part4`
 - Official Part 3 working-draft precedent:
   `https://github.com/opengeospatial/ogcapi-connected-systems/tree/part3-working-draft`
+- Corresponding Part 1 source files in the same repository, to inspect directly during the provenance pass:
+  - `api/part1/standard/23-001r0.adoc`
+  - `api/part1/standard/sections/clause_3_references.adoc`
+  - `api/part1/standard/sections/clause_13_requirements_class_sampling_features.adoc`
 
 OBJECTIVE:
 Reconcile Alex's delivered Part 4 package against the existing upstream Part 4 seed content and perform the extracted-from-Part-1 editorial provenance cleanup needed for a credible standalone Part 4 working draft.
@@ -338,19 +342,24 @@ REQUIRED WORK:
 1. Confirm you are on `part4-working-draft` and pull latest branch state.
 2. Compare the current branch's `api/part4` content against Alex's delivered package.
 3. Integrate only the clear additions or deltas from Alex's package.
-4. Review special attention files such as:
+4. Inspect the corresponding Part 1 source files directly, especially:
+   - `api/part1/standard/23-001r0.adoc`
+   - `api/part1/standard/sections/clause_3_references.adoc`
+   - `api/part1/standard/sections/clause_13_requirements_class_sampling_features.adoc`
+5. Review special attention files such as:
    - `sections/clause_3_references.adoc`
    - `sections/text for annex C.txt`
-5. Promote content into the formal draft only if its placement is clear and justified.
-6. Keep scratch or ambiguous material out of the formal draft if its status is uncertain.
-7. Run an editorial provenance pass against the extracted Part 1 material and fix obvious issues such as:
+6. Promote content into the formal draft only if its placement is clear and justified.
+7. Keep scratch or ambiguous material out of the formal draft if its status is uncertain.
+8. Run an editorial provenance pass against the extracted Part 1 material and fix obvious issues such as:
    - residual Part 1 framing that no longer fits standalone Part 4;
    - dangling cross-references;
+   - root-document macros, bibliographic anchors, and clause-level assumptions inherited from Part 1;
    - missing standalone references if they are clearly required;
    - include wiring or section ordering issues caused by the extraction.
-8. Do NOT silently rewrite normative intent.
-9. Do NOT fabricate any missing annex material or bibliographic content.
-10. If a question remains unresolved, capture it in a concise status note rather than guessing.
+9. Do NOT silently rewrite normative intent.
+10. Do NOT fabricate any missing annex material or bibliographic content.
+11. If a question remains unresolved, capture it in a concise status note rather than guessing.
 
 INTEGRITY CONSTRAINTS:
 - Preserve the existing Part 4 seed content unless a change is clearly justified by the reconciliation pass.
