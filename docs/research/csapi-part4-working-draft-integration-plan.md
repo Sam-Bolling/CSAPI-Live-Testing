@@ -244,3 +244,202 @@ The first execution pass should aim to produce:
 - a short status note listing remaining editorial decisions.
 
 That is the right target for the first pass. The first pass should not be framed as "final Part 4 completion."
+
+## Copy-Paste Execution Prompts
+
+### Prompt 1. Branch and Scaffold Pass
+
+```text
+You are working in the repository `opengeospatial/ogcapi-connected-systems`.
+
+IMPORTANT OPERATING RULES:
+- Start by checking the current branch and syncing the latest `origin/master`.
+- Do NOT work on `master` for this task.
+- Create or reuse a dedicated working branch named `part4-working-draft`.
+- This pass is mechanical scaffolding only.
+- Do NOT invent standards content, requirements, schema details, annex text, or editorial conclusions.
+- Preserve the existing upstream `api/part4` subtree.
+- Use the existing Part 3 working-draft branch as the structural model:
+  `https://github.com/opengeospatial/ogcapi-connected-systems/tree/part3-working-draft`
+- Use this private planning document as the execution brief:
+  `C:\Users\sbolling\Documents\ogc-client-csapi-live-tests\docs\research\csapi-part4-working-draft-integration-plan.md`
+
+OBJECTIVE:
+Stand up a proper standalone Part 4 working-draft scaffold around the existing upstream `api/part4` content, without yet doing the deeper editorial provenance cleanup.
+
+SOURCE CONTEXT:
+- Existing upstream Part 4 seed content already exists in `api/part4` on `master`.
+- Part 4 is understood to have been pulled out of Part 1 and repurposed as a separate part.
+- Alex Robin recommended keeping the work on a separate branch while still under development.
+
+REQUIRED WORK:
+1. Check branch status and sync latest `origin/master`.
+2. Create or switch to `part4-working-draft`.
+3. Inspect the current upstream `api/part4` subtree and the `api/part3/standard/` draft structure.
+4. Create a standalone Part 4 draft scaffold modeled on Part 3, likely under `api/part4/standard/`.
+5. Add the minimum root/build/readme structure needed for a coherent working draft, such as:
+   - root draft entrypoint, likely `23-004r0.adoc`
+   - draft-local `README.adoc`
+   - build/config files if the Part 3 pattern clearly supports them
+6. Wire the scaffold to the existing Part 4 source material already in the repo.
+7. Do NOT yet make speculative editorial decisions about annexes, missing references, or uncertain extracted text unless the fix is purely mechanical and obvious.
+8. Add a short branch-facing status note if helpful, but keep it concise and factual.
+
+INTEGRITY CONSTRAINTS:
+- Do NOT modify `master`.
+- Do NOT delete existing Part 4 seed material.
+- Do NOT fabricate missing content.
+- Do NOT treat this pass as publication-ready completion.
+
+BEFORE COMMITTING:
+- Run `git status`.
+- Review the changed files.
+- Confirm the work remains branch-scoped and scaffold-focused.
+
+COMMIT AND PUSH:
+- Commit to `part4-working-draft` with a clear message such as:
+  `Stand up Part 4 working draft scaffold`
+- Push/sync the branch to `origin/part4-working-draft`.
+
+REPORT BACK WITH:
+1. current branch;
+2. commit hash;
+3. `git status`;
+4. files added/changed;
+5. brief summary of the scaffold created;
+6. any mechanical issues or obvious gaps discovered but not resolved.
+```
+
+### Prompt 2. Content Reconciliation and Editorial Provenance Pass
+
+```text
+You are working in the repository `opengeospatial/ogcapi-connected-systems`.
+
+IMPORTANT OPERATING RULES:
+- Work only on `part4-working-draft`.
+- Start by checking the current branch and syncing the latest `origin/part4-working-draft`.
+- Do NOT merge or switch this work back to `master`.
+- This is a reconciliation and editorial provenance pass, not a speculative rewrite.
+- Do NOT invent missing standards content, annex text, references, or schema details.
+- If something is uncertain, document it explicitly instead of guessing.
+
+REFERENCE MATERIALS:
+- Private execution plan:
+  `C:\Users\sbolling\Documents\ogc-client-csapi-live-tests\docs\research\csapi-part4-working-draft-integration-plan.md`
+- Alex Robin delivered package:
+  `C:\Users\sbolling\OneDrive - Riverside Research\Documents\OGC CSAPI SWG Meeting Files\csapi_part4`
+- Official Part 3 working-draft precedent:
+  `https://github.com/opengeospatial/ogcapi-connected-systems/tree/part3-working-draft`
+
+OBJECTIVE:
+Reconcile Alex's delivered Part 4 package against the existing upstream Part 4 seed content and perform the extracted-from-Part-1 editorial provenance cleanup needed for a credible standalone Part 4 working draft.
+
+REQUIRED WORK:
+1. Confirm you are on `part4-working-draft` and pull latest branch state.
+2. Compare the current branch's `api/part4` content against Alex's delivered package.
+3. Integrate only the clear additions or deltas from Alex's package.
+4. Review special attention files such as:
+   - `sections/clause_3_references.adoc`
+   - `sections/text for annex C.txt`
+5. Promote content into the formal draft only if its placement is clear and justified.
+6. Keep scratch or ambiguous material out of the formal draft if its status is uncertain.
+7. Run an editorial provenance pass against the extracted Part 1 material and fix obvious issues such as:
+   - residual Part 1 framing that no longer fits standalone Part 4;
+   - dangling cross-references;
+   - missing standalone references if they are clearly required;
+   - include wiring or section ordering issues caused by the extraction.
+8. Do NOT silently rewrite normative intent.
+9. Do NOT fabricate any missing annex material or bibliographic content.
+10. If a question remains unresolved, capture it in a concise status note rather than guessing.
+
+INTEGRITY CONSTRAINTS:
+- Preserve the existing Part 4 seed content unless a change is clearly justified by the reconciliation pass.
+- Do NOT invent new technical substance.
+- Do NOT claim the branch is final or publication-ready.
+- Do NOT merge to `master`.
+
+BEFORE COMMITTING:
+- Run `git status`.
+- Review diffs carefully.
+- Confirm that all substantive changes are traceable either to:
+  - Alex's delivered package; or
+  - obvious standalone-draft cleanup from the Part 1 extraction.
+
+COMMIT AND PUSH:
+- Commit to `part4-working-draft` with a clear message such as:
+  `Reconcile Part 4 source material and extracted-text cleanup`
+- Push/sync the branch.
+
+REPORT BACK WITH:
+1. current branch;
+2. commit hash;
+3. `git status`;
+4. files changed;
+5. exact items integrated from Alex's package;
+6. exact editorial provenance fixes made;
+7. unresolved questions intentionally left open.
+```
+
+### Prompt 3. Build, Validation, and Review-Artifacts Pass
+
+```text
+You are working in the repository `opengeospatial/ogcapi-connected-systems`.
+
+IMPORTANT OPERATING RULES:
+- Work only on `part4-working-draft`.
+- Start by checking the current branch and syncing the latest `origin/part4-working-draft`.
+- Do NOT merge to `master`.
+- This pass is for buildability, validation, review artifacts, and branch-readiness reporting.
+- Do NOT introduce new speculative content just to make a build pass.
+
+REFERENCE MATERIALS:
+- Private execution plan:
+  `C:\Users\sbolling\Documents\ogc-client-csapi-live-tests\docs\research\csapi-part4-working-draft-integration-plan.md`
+- Part 3 working-draft precedent:
+  `https://github.com/opengeospatial/ogcapi-connected-systems/tree/part3-working-draft`
+
+OBJECTIVE:
+Make the Part 4 working-draft branch buildable and reviewable to the greatest safe extent possible, generate review artifacts if the repo tooling supports them, and document remaining blockers precisely.
+
+REQUIRED WORK:
+1. Confirm you are on `part4-working-draft` and pull latest branch state.
+2. Inspect the Part 4 draft scaffold and build instructions.
+3. Run the relevant build commands for the draft if the repo/tooling supports them.
+4. Validate:
+   - the root draft entrypoint resolves correctly;
+   - section includes resolve;
+   - references render cleanly to the extent possible;
+   - any generated HTML/PDF artifacts build successfully if supported.
+5. If the Part 3 pattern clearly supports committing generated review artifacts, do so for Part 4 as well.
+6. Add or update a concise branch-facing status note describing:
+   - what now builds;
+   - what is review-ready;
+   - what remains editorially open;
+   - any blockers that prevented full artifact generation.
+7. Do NOT paper over build or editorial problems with invented content.
+
+INTEGRITY CONSTRAINTS:
+- Do NOT merge to `master`.
+- Do NOT claim completion if the branch still has open editorial or build blockers.
+- Do NOT invent missing sections or references just to remove warnings.
+
+BEFORE COMMITTING:
+- Run `git status`.
+- Verify the build outputs and changed files.
+- Confirm whether HTML/PDF artifacts were generated and whether they should be versioned based on the existing repo precedent.
+
+COMMIT AND PUSH:
+- Commit to `part4-working-draft` with a clear message such as:
+  `Build and validate Part 4 working draft artifacts`
+- Push/sync the branch.
+
+REPORT BACK WITH:
+1. current branch;
+2. commit hash;
+3. `git status`;
+4. build commands run;
+5. whether HTML/PDF artifacts were generated successfully;
+6. files changed;
+7. exact remaining blockers or open editorial issues;
+8. whether the branch is ready for reviewer circulation as a working draft.
+```
