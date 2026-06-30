@@ -92,7 +92,9 @@ The actual gap is:
 
 ## Execution Status as of 2026-06-29
 
-The first three planned passes have now been executed.
+The scaffold, reconciliation, structural cleanup, and initial provenance cleanup
+passes have now been executed to the extent safely supported by existing source
+material.
 
 Completed:
 
@@ -101,13 +103,15 @@ Completed:
 3. Alex Robin's delivered package was reconciled against the existing upstream `api/part4` subtree.
 4. A remote GitHub Actions Metanorma build workflow was added for the branch.
 5. The remote build now succeeds and produces review artifacts, including HTML, PDF, and XML outputs.
+6. Standalone-draft root and section-order cleanup was completed to the extent safely grounded in existing source.
+7. Requirements/reference provenance cleanup reduced the direct SensorML bibliography gap and documented the unresolved historical `/req/sampling-features` linkage issue instead of guessing.
 
 Remaining:
 
-1. The branch still carries obvious standalone-draft completeness gaps such as missing Abstract, Preface, and Submitters material.
-2. Section ordering and standalone framing still reflect the extracted-from-Part-1 origin in places.
-3. Requirements and reference provenance warnings remain and need a careful non-speculative cleanup pass.
-4. The branch needs a tighter reviewer-facing status note that reflects the current buildable-but-still-editorial state.
+1. The branch still carries standalone-draft completeness gaps such as missing Abstract, Preface, and Submitters material that should not be invented without source.
+2. The historical `/req/sampling-features` base-class packaging issue remains unresolved and should not be silently normalized without explicit editorial direction.
+3. `text for annex C.txt` remains intentionally unpromoted pending author/editor clarification.
+4. The branch now needs a reviewer-readiness/build-validation pass and, if needed, a tighter reviewer-facing status note reflecting the current buildable-but-still-editorial state.
 
 ## Part 3 Precedent
 
@@ -153,44 +157,50 @@ Current successful remote outputs include:
 - XML
 - supporting diagnostic artifacts
 
-### Phase 4. Remaining: Standalone front matter and section-order cleanup
+### Phase 4. Substantially completed: Standalone front matter and section-order cleanup
 
-This pass should make the draft read more like a standalone OGC working draft and less like an extracted clause package, but only where the needed material can be grounded in existing source artifacts.
+This pass has already been completed for the currently available source
+material. The draft now reads more like a standalone working draft, but bounded
+wrapper material is still used where no safely promotable standalone source was
+available.
 
-Primary targets:
+What was achieved:
 
-- root-document framing
-- section ordering
-- clearly missing standalone-draft structure
-- residual extracted-from-Part-1 assumptions visible at the draft root
+- root-document framing was tightened;
+- section ordering was cleaned up where safe;
+- obvious extracted-from-Part-1 assumptions at the draft root were reduced;
+- unresolved standalone sections were left explicitly bounded rather than guessed.
 
-Rules:
+What remains open:
 
-- do not invent new normative or editorial content;
-- only promote or re-home material when its placement is clearly supported by the existing repo, Alex's delivered files, or the Part 1 extraction history;
-- if a required standalone section cannot be safely completed from existing source, leave it as an explicit open item rather than guessing.
+- missing standalone material such as Abstract, Preface, and Submitters content;
+- any additional standalone front matter that cannot yet be grounded in existing source.
 
-### Phase 5. Remaining: Requirements and reference provenance cleanup
+### Phase 5. Partially completed: Requirements and reference provenance cleanup
 
-Because the content was pulled out of Part 1, this pass remains mandatory even though the branch now builds.
+Because the content was pulled out of Part 1, this pass was mandatory even
+though the branch already built. The initial pass has now been completed, but a
+small number of unresolved author/editor questions remain open by design.
 
-Check for:
+Completed:
 
-- requirements classes with obviously missing or misplaced standalone support structure;
-- references that were inherited from Part 1 but not yet cleanly expressed in Part 4;
-- conformance linkage warnings that can be reduced only where the needed source material already exists;
-- bibliography and anchor issues caused by the extraction;
-- unresolved annex or scratch-material status that should be documented rather than promoted.
+- direct bibliography and anchor gaps were reduced where existing source clearly supported the fix;
+- the `OGC-SML` bibliography entry was restored for the Part 4 pose discussion;
+- the historical `/req/sampling-features` linkage issue was traced to earlier Part 1 source and Alex Robin's delivered package;
+- unresolved provenance issues were documented instead of normalized by guesswork.
 
-Rules:
+Remaining:
 
-- do not fabricate conformance classes, tests, or references just to silence warnings;
-- do not silently change normative intent;
-- distinguish between warnings that can be fixed from existing source and warnings that must remain open for author/editor review.
+- the current standalone draft still does not promote a formal Part 4 base requirement class for `/req/sampling-features`;
+- broader requirements/conformance packaging decisions around that historical base class remain open;
+- annex/scratch-material status remains unresolved where the source is ambiguous.
 
 ### Phase 6. Remaining: Reviewer-readiness and branch status pass
 
-Once the remaining editorial cleanup is done, run the remote build again and update the branch-facing status note so reviewers can immediately understand:
+This is now the recommended next execution step.
+
+Run the remote build again and update the branch-facing status note so reviewers
+can immediately understand:
 
 - what now builds successfully;
 - what has been integrated from upstream seed content versus Alex's delivered package;
@@ -247,14 +257,20 @@ Do not proceed directly to `master` if:
 
 The next execution cycle should aim to produce:
 
-- a cleaner standalone-draft root and section ordering;
-- reduced extracted-from-Part-1 provenance noise where the fix is clearly justified;
-- an updated remote build still passing after the editorial cleanup;
+- a fresh remote build/validation run after the latest provenance cleanup;
+- confirmation that HTML, PDF, and XML review artifacts still generate successfully;
 - a tighter branch-facing status note describing what remains open for author/editor review.
 
-That is the right target for the next pass. The next pass should not be framed as "final Part 4 completion."
+That is the right target for the next pass. The next pass should be framed as a
+reviewer-readiness/status pass, not as final Part 4 completion and not as a new
+content-cleanup cycle.
 
 ## Remaining Copy-Paste Execution Prompts
+
+Recommended order from the current branch state:
+
+1. Prompt 3 next.
+2. Prompts 1 and 2 are retained below as historical execution records and reusable fallback instructions, but they are no longer the recommended next step from the current branch state.
 
 ### Prompt 1. Standalone Front Matter and Section-Order Cleanup Pass
 
