@@ -90,6 +90,25 @@ The actual gap is:
 - making the branch structure match how OGC already handled Part 3 working-draft publication prep;
 - resolving any residual Part 1 framing, references, and annex dependencies.
 
+## Execution Status as of 2026-06-29
+
+The first three planned passes have now been executed.
+
+Completed:
+
+1. A dedicated `part4-working-draft` branch was created and used for all work.
+2. A standalone `api/part4/standard/` scaffold was added around the existing upstream Part 4 seed content.
+3. Alex Robin's delivered package was reconciled against the existing upstream `api/part4` subtree.
+4. A remote GitHub Actions Metanorma build workflow was added for the branch.
+5. The remote build now succeeds and produces review artifacts, including HTML, PDF, and XML outputs.
+
+Remaining:
+
+1. The branch still carries obvious standalone-draft completeness gaps such as missing Abstract, Preface, and Submitters material.
+2. Section ordering and standalone framing still reflect the extracted-from-Part-1 origin in places.
+3. Requirements and reference provenance warnings remain and need a careful non-speculative cleanup pass.
+4. The branch needs a tighter reviewer-facing status note that reflects the current buildable-but-still-editorial state.
+
 ## Part 3 Precedent
 
 The strongest precedent is the existing `part3-working-draft` branch.
@@ -109,85 +128,74 @@ The Part 3 precedent says the right pattern is not "drop content into `master` a
 
 ## Recommended Execution Plan
 
-### Phase 1. Create a dedicated Part 4 working branch
+### Phase 1. Completed: Create a dedicated Part 4 working branch
 
-Create a branch in the official repo named something like:
+A dedicated branch named:
 
 - `part4-working-draft`
 
-Rationale:
+has already been created and used as intended.
 
-- aligns with Alex's explicit recommendation to keep the work on a separate branch while under development;
-- matches the existing Part 3 working-draft pattern;
-- avoids contaminating `master` with half-integrated editorial work.
+### Phase 2. Completed: Treat existing `api/part4` on `master` as the seed baseline
 
-### Phase 2. Treat existing `api/part4` on `master` as the seed baseline
+The existing upstream `api/part4` subtree has been preserved and used as the seed baseline.
 
-Do not discard what is already in `master`.
+Alex's delivered package was used as a reconciliation input rather than as a destructive replacement.
 
-Instead:
+### Phase 3. Completed: Stand up a proper standalone Part 4 draft package
 
-- branch from current upstream state;
-- preserve the existing `api/part4` subtree;
-- use Alex's delivered package only to identify missing or divergent material.
+A standalone draft package was created under `api/part4/standard/`, and a remote GitHub Actions Metanorma workflow now builds it successfully.
 
-### Phase 3. Stand up a proper standalone Part 4 draft package
+Current successful remote outputs include:
 
-Create a draft package structure modeled on Part 3 and aligned with how Parts 1 and 2 are organized for standards work.
+- HTML
+- PDF
+- XML
+- supporting diagnostic artifacts
 
-Expected components:
+### Phase 4. Remaining: Standalone front matter and section-order cleanup
 
-- `api/part4/standard/23-004r0.adoc`
-- `api/part4/standard/README.adoc`
-- draft-local build and configuration files as needed
-- section includes wired to the existing Part 4 source content
+This pass should make the draft read more like a standalone OGC working draft and less like an extracted clause package, but only where the needed material can be grounded in existing source artifacts.
 
-The goal is a reviewable draft, not just a content holding area.
+Primary targets:
 
-### Phase 4. Reconcile Alex's extra content deliberately
-
-Review and place the delivered extras only where they clearly belong:
-
-- `clause_3_references.adoc`
-- `text for annex C.txt`
+- root-document framing
+- section ordering
+- clearly missing standalone-draft structure
+- residual extracted-from-Part-1 assumptions visible at the draft root
 
 Rules:
 
-- if a file is clearly draft content, integrate it into the standalone package;
-- if it is clearly scratch or working notes, keep it out of the formal draft until resolved;
-- do not silently promote notes into normative or informative text.
+- do not invent new normative or editorial content;
+- only promote or re-home material when its placement is clearly supported by the existing repo, Alex's delivered files, or the Part 1 extraction history;
+- if a required standalone section cannot be safely completed from existing source, leave it as an explicit open item rather than guessing.
 
-### Phase 5. Run an editorial provenance pass against Part 1
+### Phase 5. Remaining: Requirements and reference provenance cleanup
 
-Because the content was likely pulled out of Part 1, this pass is mandatory.
+Because the content was pulled out of Part 1, this pass remains mandatory even though the branch now builds.
 
 Check for:
 
-- residual Part 1 framing that no longer makes sense in a standalone Part 4;
-- dangling clause references;
-- assumptions that depended on surrounding Part 1 text;
-- bibliography and references that now need to live inside Part 4;
-- annex text that may have been incompletely extracted;
-- requirements language that may need context repairs after separation.
+- requirements classes with obviously missing or misplaced standalone support structure;
+- references that were inherited from Part 1 but not yet cleanly expressed in Part 4;
+- conformance linkage warnings that can be reduced only where the needed source material already exists;
+- bibliography and anchor issues caused by the extraction;
+- unresolved annex or scratch-material status that should be documented rather than promoted.
 
-### Phase 6. Produce review artifacts
+Rules:
 
-Follow the Part 3 pattern and generate working review outputs for the branch, ideally including:
+- do not fabricate conformance classes, tests, or references just to silence warnings;
+- do not silently change normative intent;
+- distinguish between warnings that can be fixed from existing source and warnings that must remain open for author/editor review.
 
-- HTML draft artifact;
-- PDF draft artifact.
+### Phase 6. Remaining: Reviewer-readiness and branch status pass
 
-This makes the branch usable for SWG/OAB review and avoids asking reviewers to infer the draft from raw fragments.
+Once the remaining editorial cleanup is done, run the remote build again and update the branch-facing status note so reviewers can immediately understand:
 
-### Phase 7. Publish a branch-level status note
-
-Add a concise branch-facing note describing:
-
-- what is complete;
-- what remains editorially open;
-- what was carried over from existing Part 4 material;
-- what was reconciled from Alex's package;
-- which areas still need author/editor review.
+- what now builds successfully;
+- what has been integrated from upstream seed content versus Alex's delivered package;
+- what remains editorially unresolved;
+- whether the branch is ready for reviewer circulation as a working draft even if it is not publication-ready.
 
 ## Open Editorial Questions
 
@@ -201,18 +209,21 @@ These items should be resolved explicitly rather than guessed:
 
 ## Validation Checklist
 
-Before treating the branch as review-ready, verify all of the following:
+Before treating the branch as reviewer-ready, verify all of the following:
 
 - `api/part4` seed content preserved from upstream.
 - Delivered extras reconciled intentionally.
-- Standalone root draft file exists and builds.
-- Section includes resolve cleanly.
-- No unresolved references to Part 1-only clause numbering remain.
-- References section is complete for the standalone draft.
-- Annex content is intentionally included or intentionally excluded.
+- Standalone root draft file exists.
+- Remote Metanorma GitHub Actions build succeeds.
+- Section includes resolve cleanly in the remote build.
 - Generated HTML artifact renders.
 - Generated PDF artifact renders.
-- Branch README/status note explains scope and remaining editorial gaps.
+- Generated XML artifact renders.
+- Remaining standalone front-matter and section-order gaps are either fixed from existing source or documented explicitly.
+- No avoidable references to Part 1-only framing remain at the draft root.
+- Reference and requirements-linkage warnings have been reduced where justified by existing source.
+- Annex content is intentionally included, intentionally excluded, or explicitly marked unresolved.
+- Branch README/status note explains scope, build state, and remaining editorial gaps.
 
 ## Go / No-Go Criteria
 
@@ -220,7 +231,7 @@ Before treating the branch as review-ready, verify all of the following:
 
 Proceed with execution if:
 
-- the goal is to create a grounded working-draft branch, not prematurely declare Part 4 publication-ready;
+- the goal remains to circulate a grounded working draft, not prematurely declare Part 4 publication-ready;
 - the work can stay branch-scoped;
 - unresolved editorial uncertainties are documented instead of guessed.
 
@@ -228,89 +239,24 @@ Proceed with execution if:
 
 Do not proceed directly to `master` if:
 
-- the draft scaffold is still missing;
-- annex status is unresolved;
-- Part 1 extraction issues remain unreviewed;
-- reviewers would be forced to reconstruct the intended draft from raw fragments.
+- unresolved editorial gaps are being papered over with invented content;
+- Part 1 extraction issues are still being handled by guesswork;
+- reviewer circulation would still require people to reconstruct the intended draft from raw fragments instead of a buildable working branch.
 
-## Recommended First Pass Deliverable
+## Recommended Next Deliverable
 
-The first execution pass should aim to produce:
+The next execution cycle should aim to produce:
 
-- a new `part4-working-draft` branch in the official repo;
-- a coherent `api/part4/standard/` draft scaffold;
-- reconciled source content from existing upstream Part 4 plus Alex's delivered extras;
-- buildable review artifacts if tooling is available;
-- a short status note listing remaining editorial decisions.
+- a cleaner standalone-draft root and section ordering;
+- reduced extracted-from-Part-1 provenance noise where the fix is clearly justified;
+- an updated remote build still passing after the editorial cleanup;
+- a tighter branch-facing status note describing what remains open for author/editor review.
 
-That is the right target for the first pass. The first pass should not be framed as "final Part 4 completion."
+That is the right target for the next pass. The next pass should not be framed as "final Part 4 completion."
 
-## Copy-Paste Execution Prompts
+## Remaining Copy-Paste Execution Prompts
 
-### Prompt 1. Branch and Scaffold Pass
-
-```text
-You are working in the repository `opengeospatial/ogcapi-connected-systems`.
-
-IMPORTANT OPERATING RULES:
-- Start by checking the current branch and syncing the latest `origin/master`.
-- Do NOT work on `master` for this task.
-- Create or reuse a dedicated working branch named `part4-working-draft`.
-- This pass is mechanical scaffolding only.
-- Do NOT invent standards content, requirements, schema details, annex text, or editorial conclusions.
-- Preserve the existing upstream `api/part4` subtree.
-- Use the existing Part 3 working-draft branch as the structural model:
-  `https://github.com/opengeospatial/ogcapi-connected-systems/tree/part3-working-draft`
-- Use this private planning document as the execution brief:
-  `C:\Users\sbolling\Documents\ogc-client-csapi-live-tests\docs\research\csapi-part4-working-draft-integration-plan.md`
-
-OBJECTIVE:
-Stand up a proper standalone Part 4 working-draft scaffold around the existing upstream `api/part4` content, without yet doing the deeper editorial provenance cleanup.
-
-SOURCE CONTEXT:
-- Existing upstream Part 4 seed content already exists in `api/part4` on `master`.
-- Part 4 is understood to have been pulled out of Part 1 and repurposed as a separate part.
-- Alex Robin recommended keeping the work on a separate branch while still under development.
-
-REQUIRED WORK:
-1. Check branch status and sync latest `origin/master`.
-2. Create or switch to `part4-working-draft`.
-3. Inspect the current upstream `api/part4` subtree and the `api/part3/standard/` draft structure.
-4. Create a standalone Part 4 draft scaffold modeled on Part 3, likely under `api/part4/standard/`.
-5. Add the minimum root/build/readme structure needed for a coherent working draft, such as:
-   - root draft entrypoint, likely `23-004r0.adoc`
-   - draft-local `README.adoc`
-   - build/config files if the Part 3 pattern clearly supports them
-6. Wire the scaffold to the existing Part 4 source material already in the repo.
-7. Do NOT yet make speculative editorial decisions about annexes, missing references, or uncertain extracted text unless the fix is purely mechanical and obvious.
-8. Add a short branch-facing status note if helpful, but keep it concise and factual.
-
-INTEGRITY CONSTRAINTS:
-- Do NOT modify `master`.
-- Do NOT delete existing Part 4 seed material.
-- Do NOT fabricate missing content.
-- Do NOT treat this pass as publication-ready completion.
-
-BEFORE COMMITTING:
-- Run `git status`.
-- Review the changed files.
-- Confirm the work remains branch-scoped and scaffold-focused.
-
-COMMIT AND PUSH:
-- Commit to `part4-working-draft` with a clear message such as:
-  `Stand up Part 4 working draft scaffold`
-- Push/sync the branch to `origin/part4-working-draft`.
-
-REPORT BACK WITH:
-1. current branch;
-2. commit hash;
-3. `git status`;
-4. files added/changed;
-5. brief summary of the scaffold created;
-6. any mechanical issues or obvious gaps discovered but not resolved.
-```
-
-### Prompt 2. Content Reconciliation and Editorial Provenance Pass
+### Prompt 1. Standalone Front Matter and Section-Order Cleanup Pass
 
 ```text
 You are working in the repository `opengeospatial/ogcapi-connected-systems`.
@@ -319,7 +265,68 @@ IMPORTANT OPERATING RULES:
 - Work only on `part4-working-draft`.
 - Start by checking the current branch and syncing the latest `origin/part4-working-draft`.
 - Do NOT merge or switch this work back to `master`.
-- This is a reconciliation and editorial provenance pass, not a speculative rewrite.
+- This pass is standalone-draft cleanup, not new standards authorship.
+- Do NOT invent missing standards content, requirements, annex text, references, schema details, or editorial conclusions.
+- If a missing standalone-draft section cannot be grounded in existing source material, document it explicitly instead of guessing.
+- Use this private planning document as the execution brief:
+  `C:\Users\sbolling\Documents\ogc-client-csapi-live-tests\docs\research\csapi-part4-working-draft-integration-plan.md`
+- Use the existing Part 3 working-draft branch as the structural model:
+  `https://github.com/opengeospatial/ogcapi-connected-systems/tree/part3-working-draft`
+
+OBJECTIVE:
+Make the existing Part 4 working-draft root read more like a standalone OGC draft and less like an extracted clause package, without inventing new content.
+
+REQUIRED WORK:
+1. Confirm you are on `part4-working-draft` and pull latest branch state.
+2. Inspect the current `api/part4/standard/` draft root, its README/status note, and the corresponding Part 3 draft structure.
+3. Review the current root draft entrypoint and identify obvious standalone-draft structural gaps such as:
+   - missing or misplaced front matter;
+   - section-order problems;
+   - residual extracted-from-Part-1 framing at the draft root;
+   - placeholder or weak standalone wording that can be improved using existing source.
+4. Promote or re-home material only when its placement is clearly justified by:
+   - current Part 4 source already in the repo;
+   - Alex Robin's delivered package; or
+   - obvious extracted-from-Part-1 standalone cleanup.
+5. Tighten the draft root and include ordering where safe.
+6. If any required standalone-draft element is still missing and cannot be safely completed from existing material, leave it as an explicit open issue rather than inventing text.
+7. Update any concise branch-facing note if the new structure changes what reviewers need to know.
+
+INTEGRITY CONSTRAINTS:
+- Do NOT modify `master`.
+- Do NOT fabricate missing content.
+- Do NOT silently rewrite normative intent.
+- Do NOT treat this pass as publication-ready completion.
+
+BEFORE COMMITTING:
+- Run `git status`.
+- Review the changed files.
+- Confirm the work remains branch-scoped and limited to standalone-draft cleanup.
+
+COMMIT AND PUSH:
+- Commit to `part4-working-draft` with a clear message such as:
+  `Tighten Part 4 standalone draft structure`
+- Push/sync the branch.
+
+REPORT BACK WITH:
+1. current branch;
+2. commit hash;
+3. `git status`;
+4. files changed;
+5. exact standalone-draft structure or section-order fixes made;
+6. exact open structural gaps intentionally left unresolved.
+```
+
+### Prompt 2. Requirements and Reference Provenance Cleanup Pass
+
+```text
+You are working in the repository `opengeospatial/ogcapi-connected-systems`.
+
+IMPORTANT OPERATING RULES:
+- Work only on `part4-working-draft`.
+- Start by checking the current branch and syncing the latest `origin/part4-working-draft`.
+- Do NOT merge or switch this work back to `master`.
+- This is a requirements/reference provenance pass, not a speculative rewrite.
 - Do NOT invent missing standards content, annex text, references, or schema details.
 - If something is uncertain, document it explicitly instead of guessing.
 
@@ -336,33 +343,33 @@ REFERENCE MATERIALS:
   - `api/part1/standard/sections/clause_13_requirements_class_sampling_features.adoc`
 
 OBJECTIVE:
-Reconcile Alex's delivered Part 4 package against the existing upstream Part 4 seed content and perform the extracted-from-Part-1 editorial provenance cleanup needed for a credible standalone Part 4 working draft.
+Reduce the remaining extracted-from-Part-1 reference and requirements-linkage problems in the Part 4 draft, but only where the fix is clearly supported by existing source material.
 
 REQUIRED WORK:
 1. Confirm you are on `part4-working-draft` and pull latest branch state.
-2. Compare the current branch's `api/part4` content against Alex's delivered package.
-3. Integrate only the clear additions or deltas from Alex's package.
-4. Inspect the corresponding Part 1 source files directly, especially:
+2. Inspect the current Part 4 references and requirements-related source material directly, including:
+   - `api/part4/standard/23-004r0.adoc`
+   - `api/part4/standard/sections/clause_3_references.adoc`
+   - `api/part4/sections/clause_13_sampling_feature_types.adoc`
+   - `api/part4/requirements/`
+3. Inspect the corresponding Part 1 source files directly, especially:
    - `api/part1/standard/23-001r0.adoc`
    - `api/part1/standard/sections/clause_3_references.adoc`
    - `api/part1/standard/sections/clause_13_requirements_class_sampling_features.adoc`
-5. Review special attention files such as:
-   - `sections/clause_3_references.adoc`
-   - `sections/text for annex C.txt`
-6. Promote content into the formal draft only if its placement is clear and justified.
-7. Keep scratch or ambiguous material out of the formal draft if its status is uncertain.
-8. Run an editorial provenance pass against the extracted Part 1 material and fix obvious issues such as:
+4. Review Alex Robin's delivered package only where it helps confirm provenance or placement.
+5. Fix only the problems that are clearly justified by existing source, such as:
    - residual Part 1 framing that no longer fits standalone Part 4;
    - dangling cross-references;
    - root-document macros, bibliographic anchors, and clause-level assumptions inherited from Part 1;
    - missing standalone references if they are clearly required;
-   - include wiring or section ordering issues caused by the extraction.
-9. Do NOT silently rewrite normative intent.
-10. Do NOT fabricate any missing annex material or bibliographic content.
-11. If a question remains unresolved, capture it in a concise status note rather than guessing.
+   - obviously misplaced or unhooked reference content;
+   - requirements/conformance linkage problems that can be resolved from current material already in the repo.
+6. Do NOT fabricate conformance classes, conformance tests, annex content, or bibliographic entries just to silence warnings.
+7. If a warning reflects a genuine unresolved author/editor decision, document it rather than guessing.
+8. Update any concise branch-facing status note if the remaining warning set changes materially.
 
 INTEGRITY CONSTRAINTS:
-- Preserve the existing Part 4 seed content unless a change is clearly justified by the reconciliation pass.
+- Preserve the existing Part 4 seed content unless a change is clearly justified by the provenance pass.
 - Do NOT invent new technical substance.
 - Do NOT claim the branch is final or publication-ready.
 - Do NOT merge to `master`.
@@ -372,11 +379,11 @@ BEFORE COMMITTING:
 - Review diffs carefully.
 - Confirm that all substantive changes are traceable either to:
   - Alex's delivered package; or
-  - obvious standalone-draft cleanup from the Part 1 extraction.
+  - obvious standalone-draft cleanup from the Part 1 extraction and current Part 4 source.
 
 COMMIT AND PUSH:
 - Commit to `part4-working-draft` with a clear message such as:
-  `Reconcile Part 4 source material and extracted-text cleanup`
+  `Clean up Part 4 requirements and reference provenance`
 - Push/sync the branch.
 
 REPORT BACK WITH:
@@ -384,12 +391,12 @@ REPORT BACK WITH:
 2. commit hash;
 3. `git status`;
 4. files changed;
-5. exact items integrated from Alex's package;
-6. exact editorial provenance fixes made;
-7. unresolved questions intentionally left open.
+5. exact provenance fixes made;
+6. exact warnings reduced or resolved;
+7. unresolved questions or warning classes intentionally left open.
 ```
 
-### Prompt 3. Build, Validation, and Review-Artifacts Pass
+### Prompt 3. Reviewer-Readiness and Branch Status Pass
 
 ```text
 You are working in the repository `opengeospatial/ogcapi-connected-systems`.
@@ -408,23 +415,23 @@ REFERENCE MATERIALS:
   `https://github.com/opengeospatial/ogcapi-connected-systems/tree/part3-working-draft`
 
 OBJECTIVE:
-Make the Part 4 working-draft branch buildable and reviewable to the greatest safe extent possible, generate review artifacts if the repo tooling supports them, and document remaining blockers precisely.
+Rebuild the Part 4 working-draft branch, confirm reviewer-usable artifacts still generate, and update the branch-facing status note so the branch can be circulated as a working draft with clearly stated open issues.
 
 REQUIRED WORK:
 1. Confirm you are on `part4-working-draft` and pull latest branch state.
-2. Inspect the Part 4 draft scaffold and build instructions.
-3. Run the relevant build commands for the draft if the repo/tooling supports them.
+2. Inspect the Part 4 draft scaffold, README/status note, and build instructions.
+3. Run the relevant remote or local build path for the draft, using the existing branch workflow if that remains the safest path.
 4. Validate:
    - the root draft entrypoint resolves correctly;
    - section includes resolve;
    - references render cleanly to the extent possible;
-   - any generated HTML/PDF artifacts build successfully if supported.
-5. If the Part 3 pattern clearly supports committing generated review artifacts, do so for Part 4 as well.
+   - generated HTML/PDF/XML artifacts succeed if supported.
+5. Confirm whether the current artifact-handling approach matches the intended branch workflow and Part 3 precedent.
 6. Add or update a concise branch-facing status note describing:
    - what now builds;
    - what is review-ready;
    - what remains editorially open;
-   - any blockers that prevented full artifact generation.
+   - any warning classes that remain open but were intentionally not guessed away.
 7. Do NOT paper over build or editorial problems with invented content.
 
 INTEGRITY CONSTRAINTS:
@@ -435,11 +442,11 @@ INTEGRITY CONSTRAINTS:
 BEFORE COMMITTING:
 - Run `git status`.
 - Verify the build outputs and changed files.
-- Confirm whether HTML/PDF artifacts were generated and whether they should be versioned based on the existing repo precedent.
+- Confirm whether HTML/PDF/XML artifacts were generated and whether they should be versioned based on the existing repo precedent.
 
 COMMIT AND PUSH:
 - Commit to `part4-working-draft` with a clear message such as:
-  `Build and validate Part 4 working draft artifacts`
+  `Update Part 4 reviewer-readiness status`
 - Push/sync the branch.
 
 REPORT BACK WITH:
@@ -447,7 +454,7 @@ REPORT BACK WITH:
 2. commit hash;
 3. `git status`;
 4. build commands run;
-5. whether HTML/PDF artifacts were generated successfully;
+5. whether HTML/PDF/XML artifacts were generated successfully;
 6. files changed;
 7. exact remaining blockers or open editorial issues;
 8. whether the branch is ready for reviewer circulation as a working draft.
